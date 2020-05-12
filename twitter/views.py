@@ -59,10 +59,11 @@ def logout_view(request):
     logout(request)
     return redirect('/twitter')
 
-def delete_tweet(request):
-    tweets = Tweet.objects.all()
-    tweets.delete()
-    return redirect('/twitter')
+def delete_tweet(request, pk):
+    tweet = get_object_or_404(Tweet, pk=pk)
+    tweet.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class TweetCreateView(APIView):
     
@@ -80,12 +81,6 @@ class TweetAPIView(APIView):
         tweet = get_object_or_404(Tweet, pk=pk)
         serializer = TweetSerializer(tweet)
         return Response(serializer.data)
-
-    def delete(self, request, pk):
-        tweet = get_object_or_404(Tweet, pk=pk)
-        tweet.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 

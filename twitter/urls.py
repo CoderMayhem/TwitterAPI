@@ -8,5 +8,5 @@ urlpatterns = [
     path('tweet/', TweetCreateView.as_view()),
     path('tweet/<int:pk>', TweetAPIView.as_view()),
     path('all/', TweetListView.as_view()),
-    path('delete/', delete_tweet)
+    path('tweet/delete/<int:pk>', delete_tweet)
 ]
