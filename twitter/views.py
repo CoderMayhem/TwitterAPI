@@ -8,56 +8,9 @@ from rest_framework.response import Response
 from .serializers import TweetSerializer
 from twitter.models import Tweet
 
-from django.contrib.auth import (
-    authenticate,
-    get_user_model,
-    login,
-    logout
-)
-
-from .forms import UserLoginForm, UserRegisterForm
 
 
 # Create your views here.
-
-
-def login_view(request):
-    
-    form = UserLoginForm(request.POST or None)
-    if form.is_valid():
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username = username, password = password)
-        login(request,user)
-        
-        return redirect('/twitter/tweet')
-
-    context  = {
-        'form' : form,
-    }
-    return render(request, "login.html",context)
-
-def register_view(request):
-    
-    form = UserRegisterForm(request.POST or None)
-    if form.is_valid():
-        user = form.save(commit=False)
-        password = form.cleaned_data.get('password')
-        user.set_password(password)
-        user.save()
-        new_user = authenticate(username = user.username, password = password)
-        login(request,new_user)
-        
-        return redirect('/twitter')
-
-    context  = {
-        'form' : form,
-    }
-    return render(request, "sign_up.html",context)
-
-def logout_view(request):
-    logout(request)
-    return redirect('/twitter')
 
 def delete_tweet(request, pk):
     tweet = get_object_or_404(Tweet, pk=pk)
